@@ -1,5 +1,7 @@
 [참고 링크] https://developer.chrome.com/docs/devtools/tips?hl=ko
 [CWV] https://web.dev/articles/vitals?hl=ko
+[참고 링크] https://developer.chrome.com/docs/devtools/performance/overview?hl=ko
+
 # Tips 1 : Record and analyze a performance trace
 ## Setting
 크롬 성능 측정 시 시크릿 모드 실행
@@ -30,17 +32,19 @@ Performance > Environment serrings > Network 속도 'Fast 4G'로 변경
 
 <br/>
 
-## CWV, Core Web Vitals
+### CWV, Core Web Vitals
 * LCP, Largest Contentful Paint
 : 최대 콘텐츠 렌더링 시간
+
 * INP, Interaction to Next Paint
 : 다음 페인트에 대한 상호작용
+
 * CLS, Cumulative Layout Shift
 : 누적 레이아웃 변경
 
-<img src="https://web.dev/static/articles/vitals/image/largest-contentful-paint-ea2e6ec5569b6.svg?hl=ko" width="300"/>
-<img src="https://web.dev/static/articles/vitals/image/inp-thresholds.svg?hl=ko" width="300"/>
-<img src="https://web.dev/static/articles/vitals/image/cumulative-layout-shift-t-5d49b9b883de4.svg?hl=ko" width="300"/>
+<img src="https://web.dev/static/articles/vitals/image/largest-contentful-paint-ea2e6ec5569b6.svg?hl=ko" width="200"/>
+<img src="https://web.dev/static/articles/vitals/image/inp-thresholds.svg?hl=ko" width="200"/>
+<img src="https://web.dev/static/articles/vitals/image/cumulative-layout-shift-t-5d49b9b883de4.svg?hl=ko" width="200"/>
 
 <span style="color:darkgray">[이미지 출처] https://web.dev/articles/vitals?hl=ko</span>
 
@@ -50,7 +54,8 @@ Performance > Environment serrings > Network 속도 'Fast 4G'로 변경
 특히 동일한 도메인 내에서 발생하는 리디렉션은 서버 설정을 통해 제어할 수 있으므로, 이러한 리디렉션을 줄이는 것이 좋습니다.
 
 * HTML 응답 캐싱
-: HTML 파일을 캐시에 저장하면, 서버 부하를 줄이고 페이지 로딩 시간을 단축할 수 있습니다.   다만, 사용자별로 개인화된 콘텐츠를 제공하는 경우에는 캐싱 설정에 주의해야 합니다.
+: HTML 파일을 캐시에 저장
+페이지 로딩 속도 향상, 서버 부하 감소, 데이터 전송 비용 절감 가능  
 
 * 서버 응답 시간 측정하기
 : 서버의 응답 시간은 페이지 로딩 속도에 직접적인 영향을 미칩니다.  
@@ -65,10 +70,173 @@ Brotli와 gzip과 같은 압축 알고리즘을 사용하면 네트워크 대역
 
 >> [학습중인 부분] https://web.dev/learn/performance/general-html-performance
 
-<!-- 
-# HTML 헤더
-* ETag(Entity Tag)
-서버 응답의 최신성 확인
-웹페이지 최초 진입 : ETag + 전체 응답
+## 캐싱
+### 메커니즘
 
-*  -->
+![alt text](image-9.png)
+
+1. Cold Cache(최초 요청)
+    * 웹 페이지 최초 진입 시, 브라우저에서 서버에 리소스 요청
+    * 서버는 헤더에 캐싱 관련 정보를 포함하여 **응답**(Cache-Control, ETag, Last-Modified 등)
+
+2. Warm Cache/Revalidation Cache(캐싱 후 요청)
+    * 웹 페이지에서 동일 리소스 요청 시, 브라우저는 캐시에 저장된 데이터 확인
+    * 캐싱 데이터 유효 시, 서버 요청 없이 캐시 데이터 사용
+    * 캐시 데이터 비유효/유효성 확인 필요 시, 브라우저가 서버와 통신하여 변경 여부 확인
+
+3. 캐시 만료 및 데이터 갱신
+    * 캐시 만료 또는 데이터 변경 시, 브라우저에서 새로운 데이터 요청 및 기존 캐시 업데이트
+
+* 주요 방식
+    * Strong Caching(강력한 캐싱)  
+    : 캐싱 후 요청에서 서버 요청 없이 캐시 데이터를 사용하는 것  
+    **Cache-Control : max-age=N 헤더**를 사용하여 캐시 유효시간 지정
+
+    * Conditional Caching(조건부 캐싱)  
+    : 캐싱된 데이터가 변경되었는지 확인하기 위해 서버와 통신하는 방식
+    **ETag, Last-Modified 헤더**를 사용하여 브라우저가 서버와 데이터를 비교함
+
+<br/>
+
+### 캐싱 헤더
+* Cache-Control : no-store  
+    : 캐싱 비활성화 헤더  
+    페이지를 방문할 때마다 서버에 데이터를 요청  
+    PII, 결제 정보 등을 포함한 페이지에 사용
+
+    > <span style="color:darkgray">**PII : Personally Identifiable Information, 개인 식별 정보**</span>
+
+![alt text](image-8.png)
+
+<br/>
+
+* ETag(Entity Tag)  
+    : 해시값을 통해 파일 내용이 변경되었는지 확인
+
+    * 동작 방식    
+        1. 리소스 첫 요청 시, 서버가 콘텐츠에 ETag 해시값을 포함하여 응답
+        2. 동일 리소스 재 요청 시, 브라우저가 If-None-Match 헤더에 ETag를 포함하여 요청 전송
+        3. 서버가 ETag값을 비교
+        4. ETag값 동일한 경우 서버가 304 Not Modified 응답 전송
+        5. 리소스 변경 시, 서버는 새로운 ETag와 새로운 데이터 전송
+
+![alt text](image-11.png)
+
+<br/>
+
+* Last-Modified  
+    : 리소스가 마지막으로 수정된 날짜를 기준으로 데이터 변경 여부 확인  
+    동시간 수정된 작은 변경사항은 감지하지 못할 수 있음
+
+    * 동작 방식
+        1. 리소스 첫 요청 시, 서버가 헤더에 Last-Modified값을 포함하여 응답
+        2. 동일 리소스 재 요청 시, If-Modified-Since 헤더에 Last-Modified 값을 포함하여 요청 전송
+        3. 서버가 Last-Modified값 비교
+        4. Last-Modified값이 동일한 경우 서버가 304 Not Modified 응답 전송
+        5. 리소스 변경 시, 새로운 데이터 전송
+
+![alt text](image-12.png)
+
+<br/>
+
+* Cache-Control: max-age=N  
+    : 캐시의 유효 기간을 설정
+
+    * 동작 방식
+        1. 서버가 응답할 때 헤더에 Cache-Control: max-age=N 을 포함하여 응답(단위 : 초)
+        2. 브라우저는 해당 시간 동안 캐시 데이터로 제공
+        3. 유효 기간 만료 시 서버로 새로운 요청 전송
+
+![alt text](image-13.png)
+
+<br/>
+
+### 캐시 데이터 매핑
+* 캐시 주소  
+: offset, index, tag로 구성
+
+    * Offset 
+    : 캐시 라인 내에서 원하는 데이터를 가리키기 위해 사용  
+    하위 6bit  
+
+    * Index 
+    : 캐시 라인별 index 주소  
+    하위 7bit~N번째 bit(N은 CPU 스펙에 따라 다름)
+
+    * Tag : 인덱스로 찾은 캐시 라인이 원하는 데이터가 맞는지 확인하기 위한 값
+    Offset과 Index를 제외한 나머지 영역
+
+![alt text](image-1.png)
+
+<br/>
+
+* 캐시 데이터 매핑 방법
+    1. L1 캐시가 Index 번호로 Cash Line에 접근
+    2. Cash Line의 Tag 비교
+    3. Tag 일치하는 경우 Cash Line의 Offset 비교
+    4. Offset 일치하는 경우 데이터 이동
+
+<br/>
+
+* offset 영역 계산 방법  
+
+> 변수 a의 주소값이 0x13456701일 때,  
+<br/>
+Cash Line = 64 byte  
+          = 2^6 이므로, offset 영역은 하위 6bit이다.  
+<br/>
+offset 영역의 시작은  
+주소값 0x13456701(16) 의 끝자리를 2진수로 변경  
+<br/>
+01(16) = 00000001(2)  
+2진수 8bit 중,  하위 6bit를 구하면  
+000001(2) = 1  
+<br/>
+따라서 1byte부터 4byte가 offset 영역이다.
+(1~5byte)
+
+<br/>
+
+* Index 영역 계산 방법
+
+![alt text](image-2.png)
+
+> L1 캐시  
+    = 384KB  
+    = 384 * 1024  
+    = 393,216 byte  
+<br/>
+코어 수가 4개 이므로,  
+L1캐시 / Core  
+    = 98304 / 4  
+    = 98,304 byte  
+<br/>
+L1 캐시 저장공간에는 Data와 Instruction code가 저장되어 있음  
+<br/>
+따라서 실질적으로 사용 가능한 Cash 용량(이하, 가용 메모리)은  
+Core 1개 당 L1 캐시 / 2  
+    = 98304 / 2  
+    = 49,152 byte  
+<br/>
+여기서 가용 메모리를 Cash Line 용량으로 나누면 Index 갯수를 알 수 있음  
+<br/>
+Index 갯수  
+    = 49512 / 64  
+    = 769  
+    = 2 ^ 14 * 3  
+<br/>
+따라서 Index 16개,  
+Cash Line의 하위 7bit~15번째 bit가 Index로 사용됨
+
+
+> <span style="color:darkgray">**Instruction code(명령어 코드) : 컴퓨터에게 특정 동작을 수행하도록 지시하는 비트들의 집합**</span>
+
+<br/>
+
+* 캐시 충돌  
+: index 주소(bit)는 동일하지만, Offset이 변경되면 Tag도 변경됨  
+이로 인해 Cash Miss 발생
+    <!-- * HIP
+    : 낮은 주소 > 높은 주소로 이동
+    * Stack
+    : 높은 주소 > 낮은 주소로 이동 -->
