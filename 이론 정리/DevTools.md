@@ -2,18 +2,16 @@
 [CWV] https://web.dev/articles/vitals?hl=ko
 [참고 링크] https://developer.chrome.com/docs/devtools/performance/overview?hl=ko
 
-# Tips 1 : Record and analyze a performance trace
+<!-- # Tips 1 : Record and analyze a performance trace
 ## Setting
 크롬 성능 측정 시 시크릿 모드 실행
 Performance > Environment serrings > Network 속도 'Fast 4G'로 변경
 
-<br/>
+<br/> -->
 
-## Web Vitals
-: 웹 성능 지표
-
+# Web Vitals(웹 성능 지표)
 * FCP, First Contentful Paint
-: 첫 번째 콘텐츠가 표시되는 시간
+: 페이지 로드가 시작된 시점부터 페이지 콘텐츠의 일부가 화면에 렌더링되는 시점까지의 시간
 
 * TTI, Time To Interactive
 : 사용자 인터렉션이 가능할때까지 걸리는 시간
@@ -25,14 +23,17 @@ Performance > Environment serrings > Network 속도 'Fast 4G'로 변경
 : 첫 번째 콘텐츠가 표시되고 사용자가 인터렉션이 가능해지는 시간동안 메인 스레드를 블로킹하는 작업 시간
 
 * LCP, Largest Contentful Paint
-: 가장 마지막으로 콘텐츠가 표시되는 시간(최대 콘텐츠 렌더링 시간)
+: 가장 마지막으로 콘텐츠가 표시되는 시간(최대 콘텐츠 렌더링 시간)  
+페이지 로드가 시작된 시점부터 가장 큰 텍스트 블록 또는 이미지 요소가 화면에 렌더링되는 시점까지의 시간
 
 * CLS, Comulative Layout Shift
 : 누적 레이아웃 이동(시각적 안정성 지표)
 
+* TTFB, Time to First Byte
+: 네트워크가 리소스의 첫 번째 바이트로 사용자 요청에 응답하는데 걸리는 시간
 <br/>
 
-### CWV, Core Web Vitals
+## CWV(Core Web Vitals)
 * LCP, Largest Contentful Paint
 : 최대 콘텐츠 렌더링 시간
 
@@ -47,6 +48,25 @@ Performance > Environment serrings > Network 속도 'Fast 4G'로 변경
 <img src="https://web.dev/static/articles/vitals/image/cumulative-layout-shift-t-5d49b9b883de4.svg?hl=ko" width="200"/>
 
 <span style="color:darkgray">[이미지 출처] https://web.dev/articles/vitals?hl=ko</span>
+
+# DevTools
+* DOM(Document Object Model)
+: html 요소들의 포함관계에 따라 트리형태로 구성되며, 각 요소들을 Node라고 함
+
+    > <span style="color:darkgray">**CSSOM, CSS Object Model  
+    : DOM Tree처럼 트리구조인 CSS 코드**</span>
+
+<br/>
+
+# Web Performance
+* 성능 모니터링 도구
+    * NewRelic : Full-Stack Observability (애플리케이션, 인프라, 로그 분석 지원)
+    * Datadog : SaaS 기반 통합 모니터링 솔루션 (애플리케이션, 로그, 인프라, 보안 등)
+    * Prometheus : 오픈소스 모니터링 및 알림 시스템
+
+    > <span style="color:darkgray">**모니터링 도구를 통해 리소스 과부하, 문제지점 등을 확인할 수 있음**</span>
+    
+<br/>
 
 ## HTML 속도 향상을 위한 방법
 * 리디렉션 최소화
