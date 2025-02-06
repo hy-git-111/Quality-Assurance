@@ -853,3 +853,39 @@ e.g. 성능 > 아키텍처에 따라 성능에 영향이 있음
     * dynatrave : 애플리케이션 성능 모니터링
 
 * 사용자 피드백 모니터링
+
+# 버그 vs 오류 vs 결함
+* 버그 : 사용자 관점에서 소프트웨어의 문제
+    * 원인 : 코딩 실수, 복잡한 시스템, 테스트 부족, 요구사항 정의 오류
+
+* 오류 : 코드 실행 중 발생하는 문제(사람의 문제), 코드 실행 단계에서 발생
+    * Syntex error : 문법 오류
+
+* 결함 : 코드의 설계나 논리적 문제, 오류로 인해 발생, 구현/설계 단계에서 발생
+
+## 버그 리포트 구성
+* 제목(Title)
+
+* 우선순위/심각도(Priority / Severity)
+    * 우선순위 : 긴급, 높음, 보통, 낮음
+    * 심각도 : Critical, Major, Minor, Trivial
+
+* 담당자(Assignee)
+    * 버그 수정 담당자
+
+* 환경(Environment)
+    * 버전(앱 버전, 브라우저 버전, OS 버전)
+    * 기기 정보
+    * 네트워크 상태
+    * 테스트 계정
+
+* 설명(Description)
+    * 재현 단계(Steps to Reproduce)
+    * 예상 결과(Expected Result)
+    * 실제 결과(Actual Result)
+
+* 첨부 자료(Attachments/Evidence)
+    * 스크린샷, 동영상, 로그, 콘솔 출력
+
+* 레이블/태그(Labels/Tags)
+    * 모듈명, 플랫폼(iOS/Android/Web), 팀명 등
