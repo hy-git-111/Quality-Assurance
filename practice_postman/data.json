@@ -1,0 +1,99 @@
+[{
+    "email": "{{$randomEmail}}",
+    "password": "Test1234!",
+    "name": "선우정아",
+    "code": "SUCCESS",
+    "status": 200
+},
+{
+    "email": "David@example.com",
+    "password": "Test1234!",
+    "name": "David Lee",
+    "code": "SUCCESS",
+    "status": 200 
+},
+{
+    "email": "",
+    "password": "Test1234!",
+    "name": "고길동",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email": "Gildong@example.com",
+    "password": "",
+    "name": "고길동",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email": "Gildong@example.com",
+    "password": "Test1234!",
+    "name": "",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email" : "@example.com",
+    "password": "Test1234!",
+    "name": "고길동",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email" : "Gildong@.com",
+    "password": "Test1234!",
+    "name": "고길동",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email" : "Gildong@example",
+    "password": "Test1234!",
+    "name": "고길동",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email": "Gildong@example.com",
+    "password": "&&Te%st",
+    "name": "고길동",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email": "Gildong@example.com",
+    "password": "#||Test1234567890",
+    "name": "고길동",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email": "Gildong@example.com",
+    "password": "Test1234567890",
+    "name": "고길동",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email": "Gildong@example.com",
+    "password": "Test1234!",
+    "name": "Go-Gil-dong",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email": "Gildong@example.com",
+    "password": "Test1234!",
+    "name": "고길동123",
+    "code": "DATA_TYPE_ERROR",
+    "status": 400
+},
+{
+    "email": "David@example.com",
+    "password": "Test1234!",
+    "name": "David Lee",
+    "code": "DUPLICATE_EMAIL",
+    "status": 409
+}
+]
