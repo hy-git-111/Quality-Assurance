@@ -25,11 +25,11 @@
 						"exec": [
 							"const result = pm.response.json();\r",
 							"\r",
-							"const expectedCode = pm.iterationData.get(\"code\");\r",
+							"const expectedMessage = pm.iterationData.get(\"message\");\r",
 							"const expectedStatus = parseInt(pm.iterationData.get(\"status\"));\r",
 							"\r",
-							"pm.test(\"응답코드 확인\", () => {\r",
-							"    pm.expect(result.code).to.eql(expectedCode);\r",
+							"pm.test(\"응답메세지 확인\", () => {\r",
+							"    pm.expect(result.message).to.eql(expectedMessage);\r",
 							"});\r",
 							"\r",
 							"pm.test(\"상태코드 확인\", () => {\r",
@@ -46,7 +46,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"{{EMAIL}}\",\r\n    \"password\": \"{{PASSWORD}}\",\r\n    \"name\": \"{{NAME}}\",\r\n}",
+					"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"username\": \"{{username}}\",\r\n    \"passwordConfirm\": \"{{password}}\"\r\n    \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -54,11 +54,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/signup",
+					"raw": "{{BASE_URL}}/api/users/signup",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"api",
+						"users",
 						"signup"
 					]
 				}
