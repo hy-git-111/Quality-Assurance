@@ -1224,3 +1224,14 @@ BrowerStack : 다양한 브라우저, 운영체제에서 웹사이트 테스트 
     * APM(애플리케이션 성능 관리) 지표
     * 트랜잭션별 상세 응답 시간, 메소드 레벨 프로파일링, DB 쿼리 분석, 외부 호출
     * Active Session, Lock 현황, Slow Query(Low Query)
+
+* 모니터링 도구
+    * 오픈소스
+        * Prometheus + Grafana : 생성된 클래스 수, GC 크기 등 각종 모니터링 지표를 수집하여 저장하고 검색할 수 있는 프로메테우스를 그라파나로 시각화
+        * Zabbix: 에이전트 기반 통합 모니터링 솔루션
+        * Nagios: 시스템, 네트워크 모니터링
+        
+    * 상용 솔루션
+        * Datadog : SaaS 기반 통합 모니터링 플랫폼
+        * New Relic : SaaS 기반 APM 및 인프라 모니터링
+        * Dynatrace : AI 기반 자동화된 모니터링 및 분석
