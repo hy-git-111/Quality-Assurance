@@ -5,28 +5,38 @@
     * Database via JDBC
     * FTP, LDAP, JMS, Mail (SMTP, POP3, IMAP), TCP, OS Native processes 등
 
-* GUI모드의 경우 메모리, CPU 사용량이 많아 대규모 실행 시 CLI 모드 사용 권장
 * API 부하테스트 전용 툴, SPA 테스트는 어려움
 
 <br/>
 
-## CLI 모드
+## CLI 모드(Non-GUI 모드)
+: 적은 리소스로 가상 사용자 생성 가능, 자동화 및 CI/CD 연동에 적합
+
 * 실행 명령어
     ```
     터미널에서 실행
-    jmeter -n -t <testplan.jmx> -l <results.jtl> -e -o <report_output_dir> 
+    jmeter.bat -n -t <testplan.jmx> -l <results.jtl> -e -o <report_output_dir> 
+    ```
+
+* 실행 없이 리포트 생성 명령어
+    ```
+    터미널에서 실행
+    jbeter.bat -g <results.jtl> -o <report_output_dir>
     ```
 
 * 명령어 옵션
-    * -n  : Non-GUI 모드
-    * -t  : Test Plan(.jmx) 지정
-    * -l  : 결과 파일(.jtl) 저장 경로 지정
-    * -e  : 테스트 종료 후 HTML 리포트 생성
-    * -o  : HTML 리포트를 저장할 빈 디렉터리 지정
+    * -n : Non-GUI 모드
+    * -t : Test Plan(.jmx) 지정
+    * -l : 결과 파일(.jtl, JMeter Test Results Data File) 저장 경로 지정
+    * -e : 테스트 종료 후 HTML 리포트 생성
+    * -g : 기존 결과 파일을 기반으로 HTML 리포트를 생성
+    * -o : 지정된 빈 디렉터리에 HTML 리포트를 저장
 
 <br/>
 
 ## GUI 모드
+: 메모리, CPU 사용량이 많아 대규모 실행 시 CLI 모드 사용 권장
+
 * 실행 방법
     * Windows  : jmeter.bat 실행(apache-jmeter-5.6.3\bin\jmeter.bat)
     * Linux/macOS  : 터미널에서 명령어로 실행(apache-jmeter-5.6.3\bin\jmeter.sh)
@@ -46,7 +56,7 @@
 * Thread Group
 : 가상 사용자 그룹 정의, JMeter 실행 시 Thread Group 단위로 실행됨
 
-    ![alt text](img\Thread_Group.png)
+    ![alt text](img/Thread_Group.png)
 
 <br/>
 
@@ -96,7 +106,7 @@
     API 성능 테스트의 경우 응답값을 확인한다.**</span>
 
     * Response Assertion : 응답 코드, 텍스트 내용, 헤더 등을 검증
-    ![alt text](img\Response_Assertion.png)
+    ![alt text](img/Response_Assertion.png)
 
     * Duration Assertion : 요청의 최대 허용 응답 시간 검증
     * Size Assertion : 응답 크기를 검증
@@ -210,7 +220,7 @@ Include Controller보다 구조파악하기 쉬움
 ### CSV Data Set Config
 : 테스트 데이터를 외부 CSV 파일에서 읽어와 변수에 할당
 
-![alt text](img\CSV_Data_Set_Config.png)
+![alt text](img/CSV_Data_Set_Config.png)
 
 * Filename : .jmx 파일을 기준으로 상대 경로 사용 권장(../data.csv)
 * File encoding : CSV 파일의 인코딩
@@ -266,7 +276,7 @@ Include Controller보다 구조파악하기 쉬움
 * Regular Expression Extractor(정규식 추출기)
 : 정규 표현식을 사용하여 응답 데이터 추출 
 
-    ![alt text](img\Regex_Extractor.png)
+    ![alt text](img/Regex_Extractor.png)
 
     * Name of created variable : 변수명 
     * Regular Express : 사용할 정규식, 추출할 부분을 ()에 입력
@@ -282,17 +292,175 @@ Include Controller보다 구조파악하기 쉬움
 <br/>
 
 # 결과 분석 및 튜닝
-* 주요 지표와 권장값
+* 결과 분석 : JMeter 결과와 서버 모니터링 데이터를 연관지어 분석해야 함
+* 병목 지점 : 시스템 설계상의 오류/용인으로 인해 시스템 전체 성능을 제한하는 특정 지점
 
-|지표|설명|기준값(권장)|참고
-|:---|:---|:---|:---|
-|Average Response Time|평균 응답 시간|≤ 1초 (1000ms)|사용자 경험 향상
-|Median (50th Percentile)|중앙값 응답 시간|평균과 유사해야 함|응답 시간의 일관성 확인
-|90th Percentile|상위 90% 응답 시간|평균의 1.5배 이내|응답 시간의 일관성 확인
-|Standard Deviation|응답 시간의 표준 편차|평균의 50% 이하|응답 시간의 안정성 평가
-|Error %|실패한 요청의 비율|0%|안정성 확보
-|Throughput|초당 처리 요청 수 (TPS)|높을수록 좋음|시스템 처리 능력 평가
-|Latency|요청 후 첫 응답까지의 시간|낮을수록 좋음|네트워크 지연 확인
-|Connect Time|연결 수립 시간|낮을수록 좋음|서버 연결 속도 평가
+## JMeter 지표 확인
+* JMeter Test Results Data File(.jtl)  
+: CSV 또는 XML 형식으로 작성된 결과 파일
+
+    * 설정
+    : jmeter.properties 파일에서 기본 포맷 및 저장 필드 변경 가능
+        * jmeter.save.saveservice.output_format=csv
+        * jmeter.save.saveservice.timestamp_format=ms
 
 <br/>
+
+* 주요 지표와 권장값
+
+    |지표|설명|기준값(권장)|참고|
+    |:---|:---|:---|:---|
+    |Average Response Time|평균 응답 시간|≤ 1초 (1000ms)|사용자 경험 향상
+    |Median<br/>(50th Percentile)|중앙값 응답 시간|평균과 유사해야 함|응답 시간의 일관성 확인<br/>평균 응답 시간보다 Outlier에 덜 민감함
+    |90th Percentile|90%의 요청이 이 시간 이하로 처리됨|평균의 1.5배 이내|응답 시간의 일관성 확인
+    |Standard Deviation|응답 시간의 표준 편차|평균의 50% 이하|응답 시간의 안정성 평가
+    |Error %|실패한 요청의 비율|0%|안정성 확보<br/>리소스 한계 초과, 잘못된 요청 발생 시 증가
+    |Throughput|초당 처리 요청 수 (TPS)|높을수록 좋음|시스템 처리 능력 평가<br/>Saturation Point 확인이 중요
+    |Latency|요청 후 첫 응답까지의 시간|낮을수록 좋음|네트워크 지연 확인
+    |Connect Time|연결 수립 시간|낮을수록 좋음|서버 연결 속도 평가
+
+<br/>
+
+    * Outlier(이상치) : 평균치에서 크게 벗어나서 다른 대상들과 확연히 구분되는 표본
+    * Percentile : 서비스 수준 목표(SLO, Service Level Objective)나 서비스 수준 협약(SLA, Service Level Agreement)을 설정하는데 사용됨
+
+<br/>
+
+### Error%
+* jmeter.log 확인
+* Assertion Failures : .jtl 파일의 failureMessage 확인
+* 서버 로그 확인
+* 리소스 확인 : CPU, 메모리, HDD, Network, Connection Pool 등
+
+<br/>
+
+### 처리량
+* Hits Per Second : 시간에 따른 작업 처리 수 그래프
+
+* 이상적인 Hits Per Second
+![alt text](img/Hit_per_second_1.png)
+
+* 임계점에 도달한 Hits Per Second
+![alt text](img/Hit_per_second_2.png)
+    * 시스템 최대 처리량 도달
+    * 병목 발생
+
+* 시간이 지남에 따라 Throughput 감소 원인
+    * 시스템 부하 누적
+    * 메모리 누수
+    * 병목 발생
+
+* 급격한 Throughput 변동 원인
+    * Garbage Collector 영향
+    * 외부 요인
+    * 테스트 환경 불안정
+
+<br/>
+
+### 응답 시간
+* Response Time over Time : 테스트 시간에 따른 응답 시간
+
+![alt text](img/Response_Time%20over_Time.png)
+
+* 이상적인 Response Time over Time : 응답 시간이 일정하게 유지
+
+* 시간이 지남에 따라 응답시간 증가 원인
+    * 시스템 부하 누적
+    * 메모리 누수
+    * DB 성능 저하
+
+* 주기적인 응답시간 증가 원인
+    * Garbage Collector 영향
+
+<br/>
+
+## 서버 자원 모니터링
+### CPU, 메모리 모니터링
+* 리눅스 명령어
+    * top : 리눅스 기본 제공
+    * htop : 설치 필요, 사용자 친화적 인터페이스 제공
+    * vmstat : virtual memory stat, 프로세스, 메모리, 페이징, I/O 블럭, CPU 활동 정보 출력
+
+<br/>
+
+* top/htop  
+
+    |항목|의미|주요 확인 사항|
+    |:---|:---|:---|
+    |**%CPU**|프로세스별 CPU 사용률|CPU 병목, 단일 코어 포화 여부 확인|
+    |**%MEM**|프로세스별 메모리 사용률|메모리 누수, 프로세스 급증 감지|
+    |**load average**|CPU 사용/대기 작업 수 (1, 5, 15분 평균)|1분 평균이 CPU 코어 수보다 높으면 과부하 가능성|
+    |TIME+|누적 CPU 시간|CPU 자원을 오래 점유하는 작업 식별|
+    |**RES**|실사용 메모리 크기|메모리 누적 증가 시 누수 의심|
+    |**VIRT**|가상 메모리 크기|메모리 누적 증가 시 누수 의심|
+
+<br/>
+
+* vmstat(virtual memory stat)
+
+    |구분|항목|의미|주요 확인 사항|
+    |:---|:---|:---|:---|
+    |process|r|실행 대기 중인 프로세스 수|r값이 CPU 코어수 초과 시 CPU 병목 가능성|
+    |memory|**free**|사용 가능한 메모리|줄어들고 있으면 스왑 사용 임박,<br/>OOM 발생 가능성|
+    |swap|**si / so**|swap in/out (디스크로 메모리 스왑)|so 값이 0 초과 시, 심각한 메모리 병목 상태|
+    |system|cs|Context Switch 횟수|멀티스레드 부하 가능성|
+    |cpu|**us / sy / id**|CPU 사용량|us+sy가 90% 이상이면 CPU 과부하<br/>id가 0%이면 과부하 가능성<br/>sy만 높은 경우 System Call 과다|
+
+    * r : run queue, 실행 큐
+    * Swapping : **물리적 메모리(RAM)가 부족할 때** 시스템 다운을 방지하기 위해 임시로 HDD 일부를 사용하는 기술
+        * Swap Out(so) : RAM > HDD로 데이터 이동
+        * Swap In(si) : HDD > RAM으로 데이터 이동
+
+    * context switching : CPU/코어에서 실행중이던 프로세스/스레드가 다른 프로세스/스레드로 교체되는 것, 멀티태스킹 환경에서 CPU가 다른 작업으로 전환할 때 발생
+    
+    * us : User CPU, 사용자가 실행한 애플리케이션이 CPU를 쓰는 비율
+    * sy : System CPU, 파일 읽기, 네트워크 처리 등으로 커널/운영체제가 CPU를 사용하는 비율
+    * id : Idle CPU, 아무것도 하지 않는 CPU 비율
+
+<br/>
+
+### 네트워크 모니터링
+* 리눅스 명령어
+    * netstat : 네트워크 연결 확인
+        * -s : TCP 재전송 횟수, 실패, 연결 수락 실패 등 네트워크 통계 확인
+        * -anp grep <PORT> : 특정 포트의 연결 상태 확인
+    * ss : netstat 대체 명령어, 더 빠르고 자세한 네트워크 연결 정보 출력
+    * iftop : 실시간 트래픽 모니터링
+    * nload : 간단한 네트워크 대역폭 시각화
+
+* 네트워크 지연이 원인
+    * 웹소켓 과다
+    * TCP의 네트워크 커넥션 상태가 안좋은 경우
+    * 인증서의 버전이 다른경우(버전별로 속도 상이함)
+    * 캐싱전략 등
+
+<br/>
+
+### DISK 모니터링
+* 리눅스 명령어
+    * vmstat
+    * iostat : Input/Output Statistics, 디스크, CPU의 사용량과 I/O 병목 여부를 분석 가능한 유틸리티
+        * -x : iostat 데이터 확장 통계
+
+* vmstat(virtual memory stat)
+
+    |구분|항목|의미|주요 확인 사항|
+    |:---|:---|:---|:---|
+    |io|bi|디스크에서 메모리로 읽는 양||
+    |io|bo|메모리에서 디스크로 쓰는 양||
+    |cpu|ws|I/O wait|bi, bo, wa 모두 높은 경우 디스크 병목 가능성|
+
+    * bi : Block In, 파일 접근, DB read 등 읽기 작업
+    * bo : Block Out, 로그, 캐시, DB flush 등 쓰기 작업
+
+* iostat -x
+    |항목|의미|주요 확인 사항|
+    |:---|:---|:---|
+    |await|전체 평균 응답시간(ms)|읽기 + 쓰기 평균으로, 디스크 응답 속도 전반 확인|
+    |aqu-sz|대기 중인 평균 요청 수|>1.0이면 디스크가 요청을 다 처리하지 못함 → 병목 신호|
+    |%util|디스크 사용률(%)|>80% 지속 시 디스크 과부하 가능성 큼|
+    |%iowait|CPU가 디스크 응답을 기다린 시간|id는 높은데 iowait은 길 경우 디스크 병목 의심 근거
+    
+<br/>
+
+## APM 활용
