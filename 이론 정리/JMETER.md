@@ -117,21 +117,6 @@
 
 <br/>
 
-## 주요 지표와 권장값
-
-|지표|설명|기준값(권장)|참고
-|:---|:---|:---|:---|
-|Average Response Time|평균 응답 시간|≤ 1초 (1000ms)|사용자 경험 향상
-|Median (50th Percentile)|중앙값 응답 시간|평균과 유사해야 함|응답 시간의 일관성 확인
-|90th Percentile|상위 90% 응답 시간|평균의 1.5배 이내|응답 시간의 일관성 확인
-|Standard Deviation|응답 시간의 표준 편차|평균의 50% 이하|응답 시간의 안정성 평가
-|Error %|실패한 요청의 비율|0%|안정성 확보
-|Throughput|초당 처리 요청 수 (TPS)|높을수록 좋음|시스템 처리 능력 평가
-|Latency|요청 후 첫 응답까지의 시간|낮을수록 좋음|네트워크 지연 확인
-|Connect Time|연결 수립 시간|낮을수록 좋음|서버 연결 속도 평가
-
-<br/>
-
 ## JMeter Functions
 : 간단한 데이터 생성이나 파일 읽기에 유용  
 [참고 : apache functions manual](https://jmeter.apache.org/usermanual/functions.html)
@@ -286,12 +271,28 @@ Include Controller보다 구조파악하기 쉬움
     * Name of created variable : 변수명 
     * Regular Express : 사용할 정규식, 추출할 부분을 ()에 입력
     * Template : 추출할 그룹이 여러개일때 어떤 그룹을 변수에 저장할지 지정
-        * $1$ : 첫번째 그룹
-        * $0$ : 전체 매칭된 문자열
+        * \$1$ : 첫번째 그룹
+        * \$0$ : 전체 매칭된 문자열
     * Match No. : 매칭 결과를 번호로 입력
         * 1 : 첫번째 매칭 결과
         * 0 : 랜덤 매칭 결과
         * -1 : 모든 매칭 결과
     * Default Value : 매칭되는 값이 없을 경우 변수에 할당할 기본값
+
+<br/>
+
+# 결과 분석 및 튜닝
+* 주요 지표와 권장값
+
+|지표|설명|기준값(권장)|참고
+|:---|:---|:---|:---|
+|Average Response Time|평균 응답 시간|≤ 1초 (1000ms)|사용자 경험 향상
+|Median (50th Percentile)|중앙값 응답 시간|평균과 유사해야 함|응답 시간의 일관성 확인
+|90th Percentile|상위 90% 응답 시간|평균의 1.5배 이내|응답 시간의 일관성 확인
+|Standard Deviation|응답 시간의 표준 편차|평균의 50% 이하|응답 시간의 안정성 평가
+|Error %|실패한 요청의 비율|0%|안정성 확보
+|Throughput|초당 처리 요청 수 (TPS)|높을수록 좋음|시스템 처리 능력 평가
+|Latency|요청 후 첫 응답까지의 시간|낮을수록 좋음|네트워크 지연 확인
+|Connect Time|연결 수립 시간|낮을수록 좋음|서버 연결 속도 평가
 
 <br/>
