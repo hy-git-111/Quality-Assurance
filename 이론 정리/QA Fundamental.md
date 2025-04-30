@@ -1235,3 +1235,30 @@ BrowerStack : 다양한 브라우저, 운영체제에서 웹사이트 테스트 
         * Datadog : SaaS 기반 통합 모니터링 플랫폼
         * New Relic : SaaS 기반 APM 및 인프라 모니터링
         * Dynatrace : AI 기반 자동화된 모니터링 및 분석
+
+<br/>
+
+## APM(Application Performance Management)  
+: 애플리케이션의 성능을 모니터링하는 프로세스
+
+* 추적 지표
+    * CPU 사용량
+    * 응답 시간 : 허용 가능한 기준 성능과 비교하여 응답시간이 임계값 미만인 경우 알림
+    * 오류율 : 사전 정의된 파라미터값을 기준으로 알림 제공
+    * 트랜잭션 추적 : 사용 가능한 함수 호출, 외부 호출, DB 호출 등 단일 트랜잭션 모니터링
+    * 인스턴스 : 실행 중인 서버 또는 애플리케이션 인스턴스의 수 모니터링
+    * 요청 수 : 비정삭적인 요청 감지
+    * 가동시간
+
+* APM 솔루션
+    * 오픈 소스
+        * Pinpoint: Bytecode Instrumentation 기반 Java APM
+        * Scouter: Java, Python 등 지원
+        * Zipkin: Twitter에서 개발한 분산 추적 시스템
+        * Jaeger: Uber에서 개발한 분산 추적 시스템
+        
+    * 상용: Datadog APM, New Relic APM, Dynatrace 등
+
+> <span style="color:darkgray">**APM 솔루션 vs 모니터링 도구  
+APM 솔루션 : 애플리케이션의 성능 및 사용자 경험 중심  
+일반 모니터링 도구 : 시스템, 서버, 네트워크 등 인프라 중심**</span>
