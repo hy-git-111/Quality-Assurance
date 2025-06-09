@@ -1,7 +1,8 @@
-# ERD 작성 실습
+# 데이터 기반 테스트
 ## 개요
 데이터 기반 테스트DDT(Data-Driven Testing) 역량을 강화하기 위해,  
 RealWorld 사이트의 주요 기능을 분석하여 ERD를 작성하고 해당 ERD를 바탕으로 테스트케이스를 설계한다.
+![alt text](img/Realworld.PNG)
 
 ## 목적
 - ERD 작성을 통해 서비스 구조와 기능 흐름을 파악
@@ -12,7 +13,7 @@ RealWorld 사이트의 주요 기능을 분석하여 ERD를 작성하고 해당 
 * Google Spreadsheets : 테스트케이스 작성 및 시나리오 작성
 * drawio : ERD 작성
 
-## 실습 순서
+## 순서
 1. 주요 기능 분석
 
 2. 시나리오 작성
@@ -35,15 +36,20 @@ RealWorld 사이트의 주요 기능을 분석하여 ERD를 작성하고 해당 
     4.1. 엔터티 배치  
     4.2. 카디널리티 표현  
 
-## 실습 결과
+## 테스트케이스 설계 결과
 1. 주요 기능  
-![alt text](img/ERD_실습_주요기능.png)
+![alt text](img/DDT_주요기능.png)
 
 2. 시나리오  
-![alt text](img/ERD_실습_시나리오.png)
+![alt text](img/DDT_시나리오.png)
 
 3. 엔터티와 속성, 관계표  
-![alt text](img/ERD_실습_엔터티와_속성_관계표.png)
+![alt text](img/DDT_엔터티와_속성_관계표.png)
 
 4. ER Diagram
-![alt text](img/ERD_실습_ERD.png)
+![alt text](img/DDT_ERD.png)
+
+5. Testcase  
+![alt text](img/DDT_Testcase.PNG)  
+
+[테스트케이스 설계 결과 전체 보기](https://docs.google.com/spreadsheets/d/1SxjCDiIXlvleXsjqzWHdibPLRzy_hQsP1JwZAsbmfLU/edit?usp=sharing)
